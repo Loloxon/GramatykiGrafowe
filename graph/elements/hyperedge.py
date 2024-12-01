@@ -16,8 +16,8 @@ class HyperEdge:
         self.nodes = nodes
         self.is_removable = is_removable
         self.label = label
-        self.x = np.average([node.x for node in self.nodes])
-        self.y = np.average([node.y for node in self.nodes])
+        self.x = np.average([node.x for node in self.nodes]).astype(float)
+        self.y = np.average([node.y for node in self.nodes]).astype(float)
 
     def __str__(self):
         string = f"HyperEdge: {self.x}.{self.y}, {self.is_removable} ({self.label}):  -  "

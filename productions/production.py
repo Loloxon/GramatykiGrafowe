@@ -8,33 +8,32 @@ from graph.hypergraph import HyperGraph
 class Production(ABC):
     @property
     @abstractmethod
-    def left_side(self) -> HyperGraph:
+    def _left_side(self) -> HyperGraph:
         """Abstract property that must be implemented in subclasses."""
         pass
 
     @property
     @abstractmethod
-    def right_side(self) -> HyperGraph:
+    def _right_side(self) -> HyperGraph:
         """Abstract property that must be implemented in subclasses."""
         pass
-
-    def get_left_side(self) -> HyperGraph:
-        return self.left_side
-
-    def get_right_side(self) -> HyperGraph:
-        return self.right_side
-
-    @abstractmethod
-    def check(self, graph: HyperGraph) -> bool | dict:
-        return Production.checks(graph, self.left_side)
 
     @abstractmethod
     def apply(self, graph: HyperGraph) -> HyperGraph:
         """Abstract method to apply the production."""
         pass
 
+    def check(self, graph: HyperGraph) -> bool | dict:
+        return Production.find_subgraph(graph, self._left_side)
+
+    def get_left_side(self) -> HyperGraph:
+        return self._left_side
+
+    def get_right_side(self) -> HyperGraph:
+        return self._right_side
+
     @staticmethod
-    def checks(graph: HyperGraph, subgraph: HyperGraph) -> bool | dict:
+    def find_subgraph(graph: HyperGraph, subgraph: HyperGraph) -> bool | dict:
         """Abstract method to check if the production can be applied."""
         matcher = nx.algorithms.isomorphism.GraphMatcher(
             graph.parse_hypergraph_to_networkx(),
