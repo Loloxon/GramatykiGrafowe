@@ -58,7 +58,7 @@ class HyperGraph:
 
         return
 
-    def parse_hypergraph_to_networkx(self):
+    def parse_hypergraph_to_networkx(self) -> nx.Graph:
         G = nx.Graph()
 
         # Add all nodes to the graph
@@ -129,8 +129,10 @@ class HyperGraph:
             is_border = data.get('is_border', False)
             label = data.get('label', 'E')
             # Find corresponding nodes in the nodes list
-            node1_obj = next(node for node in nodes if node.x == nx_graph.nodes[node1]['x'] and node.y == nx_graph.nodes[node1]['y'])
-            node2_obj = next(node for node in nodes if node.x == nx_graph.nodes[node2]['x'] and node.y == nx_graph.nodes[node2]['y'])
+            node1_obj = next(
+                node for node in nodes if node.x == nx_graph.nodes[node1]['x'] and node.y == nx_graph.nodes[node1]['y'])
+            node2_obj = next(
+                node for node in nodes if node.x == nx_graph.nodes[node2]['x'] and node.y == nx_graph.nodes[node2]['y'])
             edges.append(Edge(node1_obj, node2_obj, is_border, label))
 
         # Create hyperedges
@@ -144,7 +146,8 @@ class HyperGraph:
                 for neighbor in nx_graph.neighbors(node):
                     if not isinstance(neighbor, str):  # Regular node (not a hyperedge node)
                         neighbor_obj = next(
-                            n for n in nodes if n.x == nx_graph.nodes[neighbor]['x'] and n.y == nx_graph.nodes[neighbor]['y'])
+                            n for n in nodes if
+                            n.x == nx_graph.nodes[neighbor]['x'] and n.y == nx_graph.nodes[neighbor]['y'])
                         hyperedge_nodes.append(neighbor_obj)
 
                 hyperedges.append(HyperEdge(hyperedge_nodes, is_removable, label))
@@ -152,45 +155,130 @@ class HyperGraph:
         return HyperGraph(nodes, edges, hyperedges)
 
     @staticmethod
-    def visualize_hypergraph(graph):
+    def visualize_hypergraph(graph: nx.Graph, title: str):
+        """
+        Visualizes a hypergraph based on their attributes.
+
+        1. **Nodes**:
+            - **Hanging Nodes** (`is_hanging=True`) doesn't have border
+            - **Non-Hanging Nodes** (`is_hanging=False`) have border
+
+        2. **Hyperedges**:
+            - **Removable Hyperedges** (`is_removable=True`) doesn't have border
+            - **Non-Removable Hyperedges** (`is_removable=False`) have border
+
+        3. **Edges**:
+            - **Border Edges** (`is_border=True`) has solid black line
+            - **Non-Border Edges** (`is_border=False`) has dotted black line
+            - **Inside Edges** (No `is_border` attribute - edges for hyperedges): has solid grey line
+        """
+
         # Separate regular nodes and hyperedges
         pos = {node: (graph.nodes[node]['x'], graph.nodes[node]['y']) for node in graph.nodes if
                'x' in graph.nodes[node] and 'y' in graph.nodes[node]}
 
         labels = nx.get_node_attributes(graph, 'label')
 
-        # Separate nodes and hyperedges based on their attributes
+        # Separate regular nodes and hyperedges
         regular_nodes = [node for node in graph.nodes if not str(node).startswith("hyperedge_")]
         hyperedge_nodes = [node for node in graph.nodes if str(node).startswith("hyperedge_")]
 
-        # Draw regular nodes
+        # Further separate regular nodes into hanging and non-hanging
+        regular_nodes_hanging = [node for node in regular_nodes if graph.nodes[node].get('is_hanging')]
+        regular_nodes_not_hanging = [node for node in regular_nodes if not graph.nodes[node].get('is_hanging')]
+
+        hyperedge_nodes_removable = [node for node in hyperedge_nodes if graph.nodes[node].get('is_removable')]
+        hyperedge_nodes_not_removable = [node for node in hyperedge_nodes if not graph.nodes[node].get('is_removable')]
+
+        # Draw hanging nodes without borders
         nx.draw_networkx_nodes(
             graph,
             pos,
-            nodelist=regular_nodes,
+            nodelist=regular_nodes_hanging,
             node_color='lightblue',
+            edgecolors='none',  # No border
             node_size=700,
-            label="Nodes"
+            label="Hanging Nodes"
         )
 
-        # Draw hyperedges
+        # Draw non-hanging nodes with borders
         nx.draw_networkx_nodes(
             graph,
             pos,
-            nodelist=hyperedge_nodes,
+            nodelist=regular_nodes_not_hanging,
+            node_color='lightblue',
+            edgecolors='black',
+            linewidths=2,
+            node_size=700,
+            label="Non-Hanging Nodes"
+        )
+
+        # Draw removable hyperedges without borders
+        nx.draw_networkx_nodes(
+            graph,
+            pos,
+            nodelist=hyperedge_nodes_removable,
             node_color='pink',
             node_shape='s',
             node_size=800,
             label="Hyperedges"
         )
 
+        # Draw non-removable hyperedges with borders
+        nx.draw_networkx_nodes(
+            graph,
+            pos,
+            nodelist=hyperedge_nodes_not_removable,
+            node_color='pink',
+            edgecolors='black',
+            linewidths=2,
+            node_shape='s',
+            node_size=800,
+            label="Hyperedges"
+        )
+
         # Draw edges
-        nx.draw_networkx_edges(graph, pos)
+        border_edges = [(u, v) for u, v in graph.edges if
+                        'is_border' in graph.edges[u, v] and graph.edges[u, v].get('is_border')]
+        non_border_edges = [(u, v) for u, v in graph.edges if
+                            'is_border' in graph.edges[u, v] and not graph.edges[u, v].get('is_border')]
+        inside_edges = [(u, v) for u, v in graph.edges if 'is_border' not in graph.edges[u, v]]
+
+        # Draw border edges (solid)
+        nx.draw_networkx_edges(
+            graph,
+            pos,
+            edgelist=border_edges,
+            style="solid",
+            width=2,
+            edge_color="black"
+        )
+
+        # Draw non-border edges (dotted)
+        nx.draw_networkx_edges(
+            graph,
+            pos,
+            edgelist=non_border_edges,
+            style="dotted",
+            width=2,
+            edge_color="black"
+        )
+
+        # Draw non-border edges (dotted)
+        nx.draw_networkx_edges(
+            graph,
+            pos,
+            edgelist=inside_edges,
+            style="solid",
+            width=1,
+            edge_color="grey"
+        )
 
         # Add labels for nodes and edges
         nx.draw_networkx_labels(graph, pos, labels=labels)
         edge_labels = nx.get_edge_attributes(graph, 'label')
         nx.draw_networkx_edge_labels(graph, pos, edge_labels=edge_labels)
         plt.axis('off')
+        plt.title(title)
 
         plt.show()
