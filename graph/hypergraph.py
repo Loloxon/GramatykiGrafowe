@@ -197,7 +197,7 @@ class HyperGraph:
             nodelist=regular_nodes_hanging,
             node_color='lightblue',
             edgecolors='none',  # No border
-            node_size=700,
+            node_size=400,
             label="Hanging Nodes"
         )
 
@@ -209,7 +209,7 @@ class HyperGraph:
             node_color='lightblue',
             edgecolors='black',
             linewidths=2,
-            node_size=700,
+            node_size=400,
             label="Non-Hanging Nodes"
         )
 
@@ -220,7 +220,7 @@ class HyperGraph:
             nodelist=hyperedge_nodes_removable,
             node_color='pink',
             node_shape='s',
-            node_size=800,
+            node_size=400,
             label="Hyperedges"
         )
 
@@ -233,7 +233,7 @@ class HyperGraph:
             edgecolors='black',
             linewidths=2,
             node_shape='s',
-            node_size=800,
+            node_size=400,
             label="Hyperedges"
         )
 
