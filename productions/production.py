@@ -8,6 +8,12 @@ from graph.hypergraph import HyperGraph
 class Production(ABC):
     @property
     @abstractmethod
+    def _name(self) -> str:
+        """Abstract property that must be implemented in subclasses."""
+        pass
+
+    @property
+    @abstractmethod
     def _left_side(self) -> HyperGraph:
         """Abstract property that must be implemented in subclasses."""
         pass
@@ -22,6 +28,10 @@ class Production(ABC):
     def apply(self, graph: HyperGraph) -> HyperGraph:
         """Abstract method to apply the production."""
         pass
+
+    def visualize(self) -> None:
+        HyperGraph.visualize_hypergraph(self.get_left_side().parse_hypergraph_to_networkx(), f"Left side of production {self._name}")
+        HyperGraph.visualize_hypergraph(self.get_right_side().parse_hypergraph_to_networkx(), f"Right side of production {self._name}")
 
     def check(self, graph: HyperGraph) -> bool | dict:
         return Production.find_subgraph(graph, self._left_side)
