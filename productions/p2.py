@@ -5,19 +5,21 @@ from graph.hypergraph import HyperGraph
 from productions.production import Production
 
 
-class P1(Production):
+class P2(Production):
     @property
     def _name(self) -> str:
-        return "P1"
+        return "P2"
 
     @property
     def _left_side(self) -> HyperGraph:
         nodes = [Node(0, 0, False, "V"),
                  Node(1, 0, False, "V"),
                  Node(1, 1, False, "V"),
-                 Node(0, 1, False, "V")]
+                 Node(0, 1, False, "V"),
+                 Node(1, 0.5, True, "V")]
         edges = [Edge(nodes[0], nodes[1], True),
-                 Edge(nodes[1], nodes[2], True),
+                 Edge(nodes[1], nodes[4], True),
+                 Edge(nodes[4], nodes[2], True),
                  Edge(nodes[2], nodes[3], True),
                  Edge(nodes[3], nodes[0], True)]
         hyperedges = [HyperEdge([nodes[0], nodes[1], nodes[2], nodes[3]], True)]
@@ -34,7 +36,7 @@ class P1(Production):
                  Node(1, 0, False, "V"),
                  Node(0, 0.5, True, "V"),
                  Node(0.5, 0.5, False, "V"),
-                 Node(1, 0.5, True, "V"),
+                 Node(1, 0.5, False, "V"),
                  Node(0, 1, False, "V"),
                  Node(0.5, 1, True, "V"),
                  Node(1, 1, False, "V")]
