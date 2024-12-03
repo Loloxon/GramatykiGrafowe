@@ -130,9 +130,11 @@ class HyperGraph:
             label = data.get('label', 'E')
             # Find corresponding nodes in the nodes list
             node1_obj = next(
-                node for node in nodes if node.x == nx_graph.nodes[node1]['x'] and node.y == nx_graph.nodes[node1]['y'])
+                node for node in nodes if node.x == nx_graph.nodes[node1]['x'] and node.y == nx_graph.nodes[node1]['y']
+            )
             node2_obj = next(
-                node for node in nodes if node.x == nx_graph.nodes[node2]['x'] and node.y == nx_graph.nodes[node2]['y'])
+                node for node in nodes if node.x == nx_graph.nodes[node2]['x'] and node.y == nx_graph.nodes[node2]['y']
+            )
             edges.append(Edge(node1_obj, node2_obj, is_border, label))
 
         # Create hyperedges
@@ -147,7 +149,8 @@ class HyperGraph:
                     if not isinstance(neighbor, str):  # Regular node (not a hyperedge node)
                         neighbor_obj = next(
                             n for n in nodes if
-                            n.x == nx_graph.nodes[neighbor]['x'] and n.y == nx_graph.nodes[neighbor]['y'])
+                                n.x == nx_graph.nodes[neighbor]['x'] and n.y == nx_graph.nodes[neighbor]['y']
+                            )
                         hyperedge_nodes.append(neighbor_obj)
 
                 hyperedges.append(HyperEdge(hyperedge_nodes, is_removable, label))
@@ -264,7 +267,7 @@ class HyperGraph:
             edge_color="black"
         )
 
-        # Draw non-border edges (dotted)
+        # Draw edges to hyperedge node (solid, grey)
         nx.draw_networkx_edges(
             graph,
             pos,
