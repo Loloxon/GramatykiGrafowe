@@ -62,4 +62,28 @@ class P1(Production):
         )
 
     def apply(self, graph: HyperGraph) -> HyperGraph:
-        pass
+        left_side = self.get_left_side()
+        node_map = self.check(graph, left_side)
+
+        if node_map:
+            reversed_node_map = {v: k for k, v in node_map.items() if isinstance(v, Node) and isinstance(k, Node)}
+
+            node_1 = graph.split_edge_if_exist(reversed_node_map[left_side.nodes[0]], reversed_node_map[left_side.nodes[1]], False)
+            node_2 = graph.split_edge_if_exist(reversed_node_map[left_side.nodes[1]], reversed_node_map[left_side.nodes[2]], False)
+            node_3 = graph.split_edge_if_exist(reversed_node_map[left_side.nodes[2]], reversed_node_map[left_side.nodes[3]], False)
+            node_4 = graph.split_edge_if_exist(reversed_node_map[left_side.nodes[3]], reversed_node_map[left_side.nodes[0]], False)
+
+            graph.remove_hyperedge(list(reversed_node_map.values()))
+            node_center = graph.create_center_node(list(map(lambda x: reversed_node_map[x], left_side.nodes)))
+
+            graph.add_edge(node_1, node_center)
+            graph.add_edge(node_2, node_center)
+            graph.add_edge(node_3, node_center)
+            graph.add_edge(node_4, node_center)
+
+            graph.add_hyperedge([node_1, node_2, reversed_node_map[left_side.nodes[1]], node_center])
+            graph.add_hyperedge([node_2, node_3, reversed_node_map[left_side.nodes[2]], node_center])
+            graph.add_hyperedge([node_3, node_4, reversed_node_map[left_side.nodes[3]], node_center])
+            graph.add_hyperedge([node_4, node_1, reversed_node_map[left_side.nodes[0]], node_center])
+
+        return graph

@@ -27,17 +27,39 @@ class HyperGraph:
             print(str(n))
         print()
 
-    def split_edge(self, edge: Edge) -> Node:
+    def split_edge(self, edge: Edge, is_hanging: bool = True) -> Node:
         node_1 = edge.node_1
         node_2 = edge.node_2
         new_x = (node_1.x + node_2.x) / 2
         new_y = (node_1.y + node_2.y) / 2
-        new_node = Node(x=new_x, y=new_y, is_hanging=True)
+        new_node = Node(x=new_x, y=new_y, is_hanging=is_hanging)
         self.nodes.append(new_node)
 
         new_edge_1 = Edge(node_1=node_1, node_2=new_node, is_border=edge.is_border)
         new_edge_2 = Edge(node_1=new_node, node_2=node_2, is_border=edge.is_border)
         self.edges.remove(edge)
+        self.edges.append(new_edge_1)
+        self.edges.append(new_edge_2)
+
+        return new_node
+
+    def split_edge_if_exist(self, node_2: Node, node_1: Node, is_hanging: bool = True) -> Node | None:
+        edge_to_split = None
+        for edge in self.edges:
+            if (edge.node_1 == node_1 and edge.node_2 == node_2) or (edge.node_1 == node_2 and edge.node_2 == node_1):
+                edge_to_split = edge
+
+        if edge_to_split is None:
+            return None
+
+        new_x = (node_1.x + node_2.x) / 2
+        new_y = (node_1.y + node_2.y) / 2
+        new_node = Node(x=new_x, y=new_y, is_hanging=is_hanging)
+        self.nodes.append(new_node)
+
+        new_edge_1 = Edge(node_1=node_1, node_2=new_node, is_border=edge_to_split.is_border)
+        new_edge_2 = Edge(node_1=new_node, node_2=node_2, is_border=edge_to_split.is_border)
+        self.edges.remove(edge_to_split)
         self.edges.append(new_edge_1)
         self.edges.append(new_edge_2)
 
@@ -51,12 +73,37 @@ class HyperGraph:
 
         return new_node
 
-    def create_edges(self, central_node: Node, nodes: list[Node], is_border: bool = False) -> None:
+    def add_edges(self, central_node: Node, nodes: list[Node], is_border: bool = False) -> None:
         for node in nodes:
-            edge = Edge(node_1=central_node, node_2=node, is_border=is_border)
-            self.edges.append(edge)
+            self.add_edge(central_node, node, is_border=is_border)
 
         return
+
+    def add_edge(self, node_1: Node, node_2: Node, is_border: bool = False) -> None:
+        edge = Edge(node_1=node_1, node_2=node_2, is_border=is_border)
+        self.edges.append(edge)
+
+        return
+
+    def add_hyperedge(self, nodes: list[Node], is_removable: bool = False) -> None:
+        hyperedge = HyperEdge(nodes=nodes, is_removable=is_removable)
+        self.hyperedges.append(hyperedge)
+
+        return
+
+    def remove_hyperedge(self, nodes: list[Node]) -> None:
+        hyperedges_copy = list(self.hyperedges)
+
+        for hyperedge in self.hyperedges:
+            remove_flag = True
+            for node in hyperedge.nodes:
+                if node not in nodes:
+                    remove_flag = False
+                    break
+            if (len(hyperedge.nodes) == len(nodes)) and remove_flag:
+                hyperedges_copy.remove(hyperedge)
+
+        self.hyperedges = hyperedges_copy
 
     def parse_hypergraph_to_networkx(self) -> nx.Graph:
         G = nx.Graph()
