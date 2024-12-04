@@ -33,7 +33,7 @@ class TestProduction(TestCase):
 
         hypergraph2 = HyperGraph(nodes2, edges2, hyperedges2)
 
-        result = Production.find_subgraph(hypergraph, hypergraph2)
+        result = Production.check(hypergraph, hypergraph2)
 
         self.assertEqual(result.__class__, dict)
         self.assertEqual(len(result.items()), 5)
@@ -63,6 +63,6 @@ class TestProduction(TestCase):
 
         hypergraph2 = HyperGraph(nodes2, edges2, hyperedges2)
 
-        result = Production.find_subgraph(hypergraph, hypergraph2)
+        result = Production.check(hypergraph, hypergraph2)
 
         self.assertEqual(result, False)
