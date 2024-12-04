@@ -20,7 +20,7 @@ class HyperEdge:
         self.y = np.average([node.y for node in self.nodes]).astype(float)
 
     def __str__(self):
-        string = f"HyperEdge: {self.x}.{self.y}, {self.is_removable} ({self.label}):  -  "
+        string = f"HyperEdge: {self.x} {self.y}, {self.is_removable} ({self.label}):  -  "
         for node in self.nodes:
             string += f"{node}, "
         return string

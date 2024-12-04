@@ -27,30 +27,14 @@ class HyperGraph:
             print(str(n))
         print()
 
-    def split_edge(self, edge: Edge, is_hanging: bool = True) -> Node:
-        node_1 = edge.node_1
-        node_2 = edge.node_2
-        new_x = (node_1.x + node_2.x) / 2
-        new_y = (node_1.y + node_2.y) / 2
-        new_node = Node(x=new_x, y=new_y, is_hanging=is_hanging)
-        self.nodes.append(new_node)
-
-        new_edge_1 = Edge(node_1=node_1, node_2=new_node, is_border=edge.is_border)
-        new_edge_2 = Edge(node_1=new_node, node_2=node_2, is_border=edge.is_border)
-        self.edges.remove(edge)
-        self.edges.append(new_edge_1)
-        self.edges.append(new_edge_2)
-
-        return new_node
-
-    def split_edge_if_exist(self, node_2: Node, node_1: Node, is_hanging: bool = True) -> Node | None:
-        edge_to_split = None
+    def get_edge_between(self, node_1: Node, node_2: Node):
         for edge in self.edges:
             if (edge.node_1 == node_1 and edge.node_2 == node_2) or (edge.node_1 == node_2 and edge.node_2 == node_1):
-                edge_to_split = edge
+                return edge
+        raise Exception(f"There is no edge between [{node_1}] and [{node_2}]")
 
-        if edge_to_split is None:
-            return None
+    def split_edge(self, node_1: Node, node_2: Node, is_hanging: bool = True) -> Node | None:
+        edge_to_split = self.get_edge_between(node_1, node_2)
 
         new_x = (node_1.x + node_2.x) / 2
         new_y = (node_1.y + node_2.y) / 2
@@ -196,8 +180,8 @@ class HyperGraph:
                     if not isinstance(neighbor, str):  # Regular node (not a hyperedge node)
                         neighbor_obj = next(
                             n for n in nodes if
-                            n.x == nx_graph.nodes[neighbor]['x'] and n.y == nx_graph.nodes[neighbor]['y']
-                        )
+                                n.x == nx_graph.nodes[neighbor]['x'] and n.y == nx_graph.nodes[neighbor]['y']
+                            )
                         hyperedge_nodes.append(neighbor_obj)
 
                 hyperedges.append(HyperEdge(hyperedge_nodes, is_removable, label))

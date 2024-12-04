@@ -32,15 +32,18 @@ def sample_visualization():
 
     hypergraph_example = HyperGraph(nodes, edges, hyperedges)
     nx_graph_example = hypergraph_example.parse_hypergraph_to_networkx()
-    HyperGraph.visualize_hypergraph(nx_graph_example, "Graph example", False, False, False)
+    HyperGraph.visualize_hypergraph(nx_graph_example, "Graph example",
+                                    False, False, False)
 
-    hypergraph_example = p1.apply(hypergraph_example)
+    _, hypergraph_example = p1.apply(hypergraph_example)
     nx_graph_example = hypergraph_example.parse_hypergraph_to_networkx()
-    HyperGraph.visualize_hypergraph(nx_graph_example, "Graph example after P1", False, False, False)
+    HyperGraph.visualize_hypergraph(nx_graph_example, "Graph example after P1",
+                                    False, False, False)
 
-    hypergraph_example = p1.apply(hypergraph_example)
+    _, hypergraph_example = p1.apply(hypergraph_example)
     nx_graph_example = hypergraph_example.parse_hypergraph_to_networkx()
-    HyperGraph.visualize_hypergraph(nx_graph_example, "Graph example after P1 twice", False, False, False)
+    HyperGraph.visualize_hypergraph(nx_graph_example, "Graph example after P1 twice",
+                                    False, False, False)
 
 
 if __name__ == "__main__":
