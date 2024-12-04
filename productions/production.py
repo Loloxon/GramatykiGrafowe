@@ -33,9 +33,6 @@ class Production(ABC):
         HyperGraph.visualize_hypergraph(self.get_left_side().parse_hypergraph_to_networkx(), f"Left side of production {self._name}")
         HyperGraph.visualize_hypergraph(self.get_right_side().parse_hypergraph_to_networkx(), f"Right side of production {self._name}")
 
-    def check(self, graph: HyperGraph) -> bool | dict:
-        return Production.find_subgraph(graph, self._left_side)
-
     def get_left_side(self) -> HyperGraph:
         return self._left_side
 
@@ -43,7 +40,11 @@ class Production(ABC):
         return self._right_side
 
     @staticmethod
-    def find_subgraph(graph: HyperGraph, subgraph: HyperGraph) -> bool | dict:
+    def check(graph: HyperGraph, subgraph: HyperGraph) -> bool | dict:
+        return Production._find_subgraph(graph, subgraph)
+
+    @staticmethod
+    def _find_subgraph(graph: HyperGraph, subgraph: HyperGraph) -> bool | dict:
         """Abstract method to check if the production can be applied."""
         matcher = nx.algorithms.isomorphism.GraphMatcher(
             graph.parse_hypergraph_to_networkx(),
