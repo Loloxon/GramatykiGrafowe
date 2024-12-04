@@ -23,8 +23,8 @@ class TestP1(TestCase):
 
         hypergraph_example = HyperGraph(nodes, edges, hyperedges)
         p1 = P1()
-        hypergraph_example_after_p1 = p1.apply(hypergraph_example)
-        self.assertIsNotNone(hypergraph_example_after_p1)
+        successful, hypergraph_example_after_p1 = p1.apply(hypergraph_example)
+        self.assertTrue(successful)
         self.assertTrue(Production.check(hypergraph_example_after_p1, p1.get_right_side()))
 
     def test_apply_extended_graph(self):
@@ -45,8 +45,8 @@ class TestP1(TestCase):
 
         hypergraph_example = HyperGraph(nodes, edges, hyperedges)
         p1 = P1()
-        hypergraph_example_after_p1 = p1.apply(hypergraph_example)
-        self.assertIsNotNone(hypergraph_example_after_p1)
+        successful, hypergraph_example_after_p1 = p1.apply(hypergraph_example)
+        self.assertTrue(successful)
         self.assertTrue(Production.check(hypergraph_example_after_p1, p1.get_right_side()))
 
     def test_apply_invalid_graph(self):
@@ -62,5 +62,5 @@ class TestP1(TestCase):
 
         hypergraph_example = HyperGraph(nodes, edges, hyperedges)
         p1 = P1()
-        hypergraph_example_after_p1 = p1.apply(hypergraph_example)
-        self.assertIsNone(hypergraph_example_after_p1)
+        successful, hypergraph_example_after_p1 = p1.apply(hypergraph_example)
+        self.assertFalse(successful)
