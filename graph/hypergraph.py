@@ -33,7 +33,7 @@ class HyperGraph:
                 return edge
         raise Exception(f"There is no edge between [{node_1}] and [{node_2}]")
 
-    def split_edge(self, node_1: Node, node_2: Node, is_hanging: bool = True) -> Node | None:
+    def split_edge(self, node_1: Node, node_2: Node, is_hanging: bool = True) -> Node:
         edge_to_split = self.get_edge_between(node_1, node_2)
 
         new_x = (node_1.x + node_2.x) / 2
