@@ -25,7 +25,7 @@ class Production(ABC):
         pass
 
     @abstractmethod
-    def apply(self, graph: HyperGraph) -> HyperGraph:
+    def apply(self, graph: HyperGraph) -> (bool, HyperGraph):
         """Abstract method to apply the production."""
         pass
 
