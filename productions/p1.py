@@ -61,44 +61,35 @@ class P1(Production):
             hyperedges=hyperedges
         )
 
-    def apply(self, graph: HyperGraph) -> (bool, HyperGraph):
-        left_side = self.get_left_side()
-        node_map = self.check(graph, left_side)
-        successful = False
+    def transform(self, graph: HyperGraph, node_map: dict[Node, Node], left_side: HyperGraph) -> (bool, HyperGraph):
+        node_1 = graph.split_edge(node_map[left_side.nodes[0]],
+                                  node_map[left_side.nodes[1]],
+                                  graph.get_edge_between(node_map[left_side.nodes[0]],
+                                                         node_map[left_side.nodes[1]]).is_border)
+        node_2 = graph.split_edge(node_map[left_side.nodes[1]],
+                                  node_map[left_side.nodes[2]],
+                                  graph.get_edge_between(node_map[left_side.nodes[1]],
+                                                         node_map[left_side.nodes[2]]).is_border)
+        node_3 = graph.split_edge(node_map[left_side.nodes[2]],
+                                  node_map[left_side.nodes[3]],
+                                  graph.get_edge_between(node_map[left_side.nodes[2]],
+                                                         node_map[left_side.nodes[3]]).is_border)
+        node_4 = graph.split_edge(node_map[left_side.nodes[3]],
+                                  node_map[left_side.nodes[0]],
+                                  graph.get_edge_between(node_map[left_side.nodes[3]],
+                                                         node_map[left_side.nodes[0]]).is_border)
 
-        if node_map:
-            reversed_node_map = {v: k for k, v in node_map.items() if isinstance(v, Node) and isinstance(k, Node)}
+        graph.remove_hyperedge(list(node_map.values()))
+        node_center = graph.create_center_node(list(map(lambda x: node_map[x], left_side.nodes)))
 
-            node_1 = graph.split_edge(reversed_node_map[left_side.nodes[0]],
-                                      reversed_node_map[left_side.nodes[1]],
-                                      graph.get_edge_between(reversed_node_map[left_side.nodes[0]],
-                                                             reversed_node_map[left_side.nodes[1]]).is_border)
-            node_2 = graph.split_edge(reversed_node_map[left_side.nodes[1]],
-                                      reversed_node_map[left_side.nodes[2]],
-                                      graph.get_edge_between(reversed_node_map[left_side.nodes[1]],
-                                                             reversed_node_map[left_side.nodes[2]]).is_border)
-            node_3 = graph.split_edge(reversed_node_map[left_side.nodes[2]],
-                                      reversed_node_map[left_side.nodes[3]],
-                                      graph.get_edge_between(reversed_node_map[left_side.nodes[2]],
-                                                             reversed_node_map[left_side.nodes[3]]).is_border)
-            node_4 = graph.split_edge(reversed_node_map[left_side.nodes[3]],
-                                      reversed_node_map[left_side.nodes[0]],
-                                      graph.get_edge_between(reversed_node_map[left_side.nodes[3]],
-                                                             reversed_node_map[left_side.nodes[0]]).is_border)
+        graph.add_edge(node_1, node_center)
+        graph.add_edge(node_2, node_center)
+        graph.add_edge(node_3, node_center)
+        graph.add_edge(node_4, node_center)
 
-            graph.remove_hyperedge(list(reversed_node_map.values()))
-            node_center = graph.create_center_node(list(map(lambda x: reversed_node_map[x], left_side.nodes)))
+        graph.add_hyperedge([node_1, node_2, node_map[left_side.nodes[1]], node_center])
+        graph.add_hyperedge([node_2, node_3, node_map[left_side.nodes[2]], node_center])
+        graph.add_hyperedge([node_3, node_4, node_map[left_side.nodes[3]], node_center])
+        graph.add_hyperedge([node_4, node_1, node_map[left_side.nodes[0]], node_center])
 
-            graph.add_edge(node_1, node_center)
-            graph.add_edge(node_2, node_center)
-            graph.add_edge(node_3, node_center)
-            graph.add_edge(node_4, node_center)
-
-            graph.add_hyperedge([node_1, node_2, reversed_node_map[left_side.nodes[1]], node_center])
-            graph.add_hyperedge([node_2, node_3, reversed_node_map[left_side.nodes[2]], node_center])
-            graph.add_hyperedge([node_3, node_4, reversed_node_map[left_side.nodes[3]], node_center])
-            graph.add_hyperedge([node_4, node_1, reversed_node_map[left_side.nodes[0]], node_center])
-
-            successful = True
-
-        return successful, graph
+        return True, graph

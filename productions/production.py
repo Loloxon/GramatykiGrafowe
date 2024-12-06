@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 
 import networkx as nx
 
+from graph.elements.node import Node
 from graph.hypergraph import HyperGraph
 
 
@@ -25,9 +26,20 @@ class Production(ABC):
         pass
 
     @abstractmethod
-    def apply(self, graph: HyperGraph) -> (bool, HyperGraph):
-        """Abstract method to apply the production."""
+    def transform(self, graph: HyperGraph, node_map: dict[Node, Node], left_side: HyperGraph) -> (bool, HyperGraph):
+        """Abstract method to transform the main graph."""
         pass
+
+    def apply(self, graph: HyperGraph) -> (bool, HyperGraph):
+        left_side = self.get_left_side()
+        node_map = self.check(graph, left_side)
+
+        if node_map:
+            reversed_node_map = {v: k for k, v in node_map.items() if isinstance(v, Node) and isinstance(k, Node)}
+
+            return self.transform(graph, reversed_node_map, left_side)
+
+        return False, graph
 
     def visualize(self) -> None:
         HyperGraph.visualize_hypergraph(self.get_left_side().parse_hypergraph_to_networkx(), f"Left side of production {self._name}")
