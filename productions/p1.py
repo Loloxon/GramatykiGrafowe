@@ -12,7 +12,7 @@ class P1(Production):
 
     @property
     def _left_side(self) -> HyperGraph:
-        nodes = [Node(0, 0, False, False),
+        nodes = [Node(0, 0, False),
                  Node(1, 0, False),
                  Node(1, 1, False),
                  Node(0, 1, False)]

@@ -7,7 +7,8 @@ class Node:
             x (float): The x-coordinate of the node in a 2D space.
             y (float): The y-coordinate of the node in a 2D space.
             is_hanging (bool): A boolean attribute representing "hanging node" a property (true means node is hanging).
-            label (str, optional): A label for the node. Defaults to .
+            is_production_relevant (bool, optional): A boolean attribute representing whether "is_hanging" should be considered when looking for isomorphic graph
+            label (str, optional): A label for the node. Defaults to "V".
         """
         self.x = x
         self.y = y
