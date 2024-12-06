@@ -1,5 +1,5 @@
 class Node:
-    def __init__(self, x: float, y: float, is_hanging: bool, label: str = "V"):
+    def __init__(self, x: float, y: float, is_hanging: bool, is_production_relevant: bool = True, label: str = "V"):
         """
         Initializes a Node object.
 
@@ -7,13 +7,14 @@ class Node:
             x (float): The x-coordinate of the node in a 2D space.
             y (float): The y-coordinate of the node in a 2D space.
             is_hanging (bool): A boolean attribute representing "hanging node" a property (true means node is hanging).
-            label (str, optional): A label for the node. Defaults to "V".
+            label (str, optional): A label for the node. Defaults to .
         """
         self.x = x
         self.y = y
         self.is_hanging = is_hanging
+        self.is_production_relevant = is_production_relevant
         self.label = label
 
     def __str__(self):
-        string = f"Node: {self.x} {self.y}, {self.is_hanging} ({self.label})"
+        string = f"Node: {self.x} {self.y}, {self.is_hanging}-{self.is_production_relevant} ({self.label})"
         return string

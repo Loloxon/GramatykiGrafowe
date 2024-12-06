@@ -99,6 +99,7 @@ class HyperGraph:
                 x=node.x,
                 y=node.y,
                 is_hanging=node.is_hanging,
+                is_production_relevant=node.is_production_relevant,
                 label=node.label
             )
 
