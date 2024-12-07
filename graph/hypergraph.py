@@ -5,7 +5,6 @@ import numpy as np
 from graph.elements.edge import Edge
 from graph.elements.hyperedge import HyperEdge
 from graph.elements.node import Node
-# from productions.utils import visualize_hypergraph
 
 
 class HyperGraph:
