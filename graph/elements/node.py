@@ -17,5 +17,5 @@ class Node:
         self.label = label
 
     def __str__(self):
-        string = f"Node: {self.x} {self.y}, {self.is_hanging}-{self.is_production_relevant} ({self.label})"
+        string = f"Node: {self.x} {self.y}; hanging - {self.is_hanging}; relevant - {self.is_production_relevant}; ({self.label})"
         return string
