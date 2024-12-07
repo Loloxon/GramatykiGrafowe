@@ -12,11 +12,11 @@ class P2(Production):
 
     @property
     def _left_side(self) -> HyperGraph:
-        nodes = [Node(0, 0, False, "V"),
-                 Node(1, 0, False, "V"),
-                 Node(1, 1, False, "V"),
-                 Node(0, 1, False, "V"),
-                 Node(1, 0.5, True, "V")]
+        nodes = [Node(0, 0, False),
+                 Node(1, 0, False),
+                 Node(1, 1, False),
+                 Node(0, 1, False),
+                 Node(1, 0.5, True)]
         edges = [Edge(nodes[0], nodes[1], True),
                  Edge(nodes[1], nodes[4], True),
                  Edge(nodes[4], nodes[2], True),
@@ -31,15 +31,15 @@ class P2(Production):
 
     @property
     def _right_side(self) -> HyperGraph:
-        nodes = [Node(0, 0, False, "V"),
-                 Node(0.5, 0, True, "V"),
-                 Node(1, 0, False, "V"),
-                 Node(0, 0.5, True, "V"),
-                 Node(0.5, 0.5, False, "V"),
-                 Node(1, 0.5, False, "V"),
-                 Node(0, 1, False, "V"),
-                 Node(0.5, 1, True, "V"),
-                 Node(1, 1, False, "V")]
+        nodes = [Node(0, 0, False),
+                 Node(0.5, 0, True),
+                 Node(1, 0, False),
+                 Node(0, 0.5, True),
+                 Node(0.5, 0.5, False),
+                 Node(1, 0.5, False),
+                 Node(0, 1, False),
+                 Node(0.5, 1, True),
+                 Node(1, 1, False)]
         edges = [Edge(nodes[0], nodes[1], True),
                  Edge(nodes[1], nodes[2], True),
                  Edge(nodes[3], nodes[4], False),
