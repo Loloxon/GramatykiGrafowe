@@ -4,7 +4,7 @@ from graph.elements.edge import Edge
 from graph.elements.hyperedge import HyperEdge
 from graph.elements.node import Node
 from graph.hypergraph import HyperGraph
-from utils import check, _find_subgraphs
+from utils import check, find_subgraphs
 
 
 class TestUtils(TestCase):
@@ -33,7 +33,7 @@ class TestUtils(TestCase):
 
         hypergraph2 = HyperGraph(nodes2, edges2, hyperedges2)
 
-        result = _find_subgraphs(hypergraph, hypergraph2)
+        result = find_subgraphs(hypergraph, hypergraph2)
         self.assertTrue(result)
         self.assertEqual(1, len(result))
 
@@ -62,7 +62,7 @@ class TestUtils(TestCase):
 
         hypergraph2 = HyperGraph(nodes2, edges2, hyperedges2)
 
-        result = _find_subgraphs(hypergraph, hypergraph2)
+        result = find_subgraphs(hypergraph, hypergraph2)
         self.assertTrue(result)
         self.assertEqual(8, len(result))
 

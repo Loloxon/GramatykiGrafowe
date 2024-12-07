@@ -14,25 +14,25 @@ def equals(graph1: HyperGraph, graph2: HyperGraph) -> bool:
 
 
 def check(graph: HyperGraph, subgraph: HyperGraph) -> bool | dict:
-    return _find_subgraph(graph, subgraph)
+    return find_subgraph(graph, subgraph)
 
 
-def _find_subgraph(graph: HyperGraph, subgraph: HyperGraph) -> bool | dict:
-    found_subgraphs = _find_subgraphs(graph, subgraph)
+def find_subgraph(graph: HyperGraph, subgraph: HyperGraph) -> bool | dict:
+    found_subgraphs = find_subgraphs(graph, subgraph)
     return choice(found_subgraphs) if len(found_subgraphs) > 0 else False
 
 
-def _find_subgraphs(graph: HyperGraph, subgraph: HyperGraph) -> list[dict]:
+def find_subgraphs(graph: HyperGraph, subgraph: HyperGraph) -> list[dict]:
     matcher = nx.algorithms.isomorphism.GraphMatcher(
         graph.parse_hypergraph_to_networkx(),
         subgraph.parse_hypergraph_to_networkx(),
-        node_match=_node_match
+        node_match=node_match
     )
 
     return list(matcher.subgraph_isomorphisms_iter())
 
 
-def _node_match(v_self, v_left):
+def node_match(v_self, v_left):
     return ("label" in v_self.keys() and "label" in v_left.keys() and v_self["label"] == v_left["label"]) and \
         (("is_hanging" in v_self.keys() and "is_hanging" in v_left.keys() and v_self["is_hanging"] == v_left[
             "is_hanging"]

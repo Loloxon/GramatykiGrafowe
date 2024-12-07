@@ -114,7 +114,6 @@ class TestP1(TestProduction, TestCase):
         expected_hypergraph = HyperGraph(nodes, edges, hyperedges)
 
         p2 = P2()
-        p2.visualize()
         successful, tested_hypergraph_after_p2 = p2.apply(tested_hypergraph)
         self.assertTrue(successful)
         self.assertTrue(equals(tested_hypergraph_after_p2, expected_hypergraph))
