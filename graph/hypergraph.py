@@ -79,8 +79,10 @@ class HyperGraph:
 
         return
 
-    def add_hyperedge(self, nodes: list[Node], is_removable: bool = False) -> None:
-        hyperedge = HyperEdge(nodes=nodes, is_removable=is_removable)
+    def add_hyperedge(
+        self, nodes: list[Node], is_removable: bool = False, label: str = "Q"
+    ) -> None:
+        hyperedge = HyperEdge(nodes=nodes, is_removable=is_removable, label=label)
         self.hyperedges.append(hyperedge)
 
         return
