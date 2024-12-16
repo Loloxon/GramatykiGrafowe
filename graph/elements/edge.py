@@ -18,5 +18,7 @@ class Edge:
         self.label = label
 
     def __str__(self):
-        string = f"Edge: [{self.node_1}] - [{self.node_2}], {self.is_border} ({self.label})"
+        string = (
+            f"Edge: [{self.node_1}] - [{self.node_2}], {self.is_border} ({self.label})"
+        )
         return string
