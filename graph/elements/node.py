@@ -1,5 +1,12 @@
 class Node:
-    def __init__(self, x: float, y: float, is_hanging: bool, is_production_relevant: bool = True, label: str = "V"):
+    def __init__(
+        self,
+        x: float,
+        y: float,
+        is_hanging: bool,
+        is_production_relevant: bool = True,
+        label: str = "V",
+    ):
         """
         Initializes a Node object.
         Args:
