@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from copy import deepcopy
 
 from graph.elements.node import Node
 from graph.hypergraph import HyperGraph
@@ -19,10 +20,10 @@ class Production(ABC):
         pass
 
     @property
-    @abstractmethod
     def _right_side(self) -> HyperGraph:
-        """Abstract property that must be implemented in subclasses."""
-        pass
+        graph = deepcopy(self.get_left_side())
+        self.apply(graph)
+        return graph
 
     @abstractmethod
     def transform(
