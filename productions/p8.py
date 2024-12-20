@@ -12,13 +12,13 @@ class P8(Production):
 
     @property
     def _left_side(self) -> HyperGraph:
-        nodes = [Node(0, 0, False),
-                 Node(1, 0, False),
-                 Node(1, 1, False),
-                 Node(0, 1, False),
+        nodes = [Node(0, 0, False, is_production_relevant=False),
+                 Node(1, 0, False, is_production_relevant=False),
+                 Node(1, 1, False, is_production_relevant=False),
+                 Node(0, 1, False, is_production_relevant=False),
                  Node(1, 0.5, True),
-                 Node(2, 0.5, False),
-                 Node(2, 1, False)]
+                 Node(2, 0.5, False, is_production_relevant=False),
+                 Node(2, 1, False, is_production_relevant=False)]
         edges = [Edge(nodes[1], nodes[4], False),
                  Edge(nodes[2], nodes[4], False)]
         hyperedges = [HyperEdge([nodes[0], nodes[1], nodes[2], nodes[3]], False),
