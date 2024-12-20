@@ -3,7 +3,10 @@ from graph.elements.hyperedge import HyperEdge
 from graph.elements.node import Node
 from graph.hypergraph import HyperGraph
 from productions.p1 import P1
+from productions.p10 import P10
+from productions.p16 import P16
 from productions.p2 import P2
+from productions.p9 import P9
 from utils import visualize_hypergraph
 
 
@@ -56,5 +59,45 @@ def sample_visualization():
                          False, False, False)
 
 
+def p9_visualization():
+    p9 = P9()
+    p9.visualize()
+
+    hypergraph_9 = p9.get_left_side()
+    nx_graph_9 = hypergraph_9.parse_hypergraph_to_networkx()
+    visualize_hypergraph(nx_graph_9, "Graph 9", True, True, True)
+
+    _, hypergraph_9 = p9.apply(hypergraph_9)
+    nx_graph_9 = hypergraph_9.parse_hypergraph_to_networkx()
+    visualize_hypergraph(nx_graph_9, "Graph 9 after P9", True, True, True)
+
+def p10_visualization():
+    p10 = P10()
+    p10.visualize()
+
+    hypergraph_10 = p10.get_left_side()
+    nx_graph_10 = hypergraph_10.parse_hypergraph_to_networkx()
+    visualize_hypergraph(nx_graph_10, "Graph 10", True, True, True)
+
+    _, hypergraph_10 = p10.apply(hypergraph_10)
+    nx_graph_10 = hypergraph_10.parse_hypergraph_to_networkx()
+    visualize_hypergraph(nx_graph_10, "Graph 10 after P10", True, True, True)
+
+def p16_visualization():
+    p16 = P16()
+    p16.visualize()
+
+    hypergraph_16 = p16.get_left_side()
+    nx_graph_16 = hypergraph_16.parse_hypergraph_to_networkx()
+    visualize_hypergraph(nx_graph_16, "Graph 16", True, True, True)
+
+    _, hypergraph_16 = p16.apply(hypergraph_16)
+    nx_graph_16 = hypergraph_16.parse_hypergraph_to_networkx()
+    visualize_hypergraph(nx_graph_16, "Graph 16 after P16", True, True, True)
+
+
 if __name__ == "__main__":
-    sample_visualization()
+    # sample_visualization()
+    p9_visualization()
+    p10_visualization()
+    p16_visualization()
