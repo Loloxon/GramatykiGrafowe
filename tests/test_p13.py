@@ -18,6 +18,68 @@ class TestP13(TestProduction, TestCase):
         self.assertTrue(successful)
         self.assertTrue(equals(tested_hypergraph_after_p13, expected_hypergraph))
 
+        # rotated P13 left
+        nodes = [
+            Node(0, 0, False),  # 1
+            Node(1, 0, False),  # 2
+            Node(1, 1, False),  # 3
+            Node(0, 1, False),  # 4
+            Node(1.5, 0.5, False),  # 5
+            Node(0.5, 0, True),  # 6
+            Node(0, 0.5, True),  # 7
+            Node(1.25, 0.25, True),  # 8
+        ]
+        edges = [
+            Edge(nodes[0], nodes[5], True),  # 1 - 6
+            Edge(nodes[5], nodes[1], True),  # 6 - 2
+            Edge(nodes[1], nodes[7], True),  # 2 - 8
+            Edge(nodes[4], nodes[7], True),  # 5 - 8
+            Edge(nodes[2], nodes[4], True),  # 3 - 5
+            Edge(nodes[2], nodes[3], True),  # 3 - 4
+            Edge(nodes[3], nodes[6], True),  # 4 - 7
+            Edge(nodes[6], nodes[0], True),  # 7 - 1
+        ]
+        hyperedges = [
+            HyperEdge(
+                [nodes[0], nodes[1], nodes[4], nodes[2], nodes[3]], True, label="P"
+            )
+        ]
+        tested_hypergraph = HyperGraph(nodes, edges, hyperedges)
+        expected_hypergraph = p13._right_side
+        successful, tested_hypergraph_after_p13 = p13.apply(tested_hypergraph)
+        self.assertTrue(successful)
+        self.assertTrue(equals(tested_hypergraph_after_p13, expected_hypergraph))
+
+        # moved vertex 8
+        nodes = [
+            Node(0, 0, False),  # 1
+            Node(1, 0, False),  # 2
+            Node(1, 1, False),  # 3
+            Node(0, 1, False),  # 4
+            Node(1.5, 0.5, False),  # 5
+            Node(0.5, 0, True),  # 6
+            Node(0, 0.5, True),  # 7
+            Node(1.25, 0.75, True),  # 8
+        ]
+        edges = [
+            Edge(nodes[0], nodes[5], True),  # 1 - 6
+            Edge(nodes[5], nodes[1], True),  # 6 - 2
+            Edge(nodes[1], nodes[4], True),  # 2 - 5
+            Edge(nodes[4], nodes[7], True),  # 5 - 8
+            Edge(nodes[2], nodes[7], True),  # 8 - 3
+            Edge(nodes[2], nodes[3], True),  # 3 - 4
+            Edge(nodes[3], nodes[6], True),  # 4 - 7
+            Edge(nodes[6], nodes[0], True),  # 7 - 1
+        ]
+        hyperedges = [
+            HyperEdge(
+                [nodes[0], nodes[1], nodes[4], nodes[2], nodes[3]], True, label="P"
+            )
+        ]
+        tested_hypergraph = HyperGraph(nodes, edges, hyperedges)
+        successful, tested_hypergraph_after_p13 = p13.apply(tested_hypergraph)
+        self.assertFalse(successful)
+
     def test_apply_extended_graph(self):
         nodes = [
             Node(0, 0, False),  # 1
