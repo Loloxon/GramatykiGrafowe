@@ -44,8 +44,8 @@ class TestP15(TestProduction, TestCase):
             Edge(nodes[8], nodes[2], True),  # 9 - 3
             Edge(nodes[2], nodes[7], True),  # 3 - 8
             Edge(nodes[7], nodes[3], True),  # 8 - 4
-            Edge(nodes[3], nodes[6], True),  # 4 - 7
-            Edge(nodes[6], nodes[0], True),  # 7 - 1
+            Edge(nodes[3], nodes[6], False),  # 4 - 7
+            Edge(nodes[6], nodes[0], False),  # 7 - 1
 
             Edge(nodes[3], nodes[10], True),  # 4 - 11
             Edge(nodes[10], nodes[11], True),  # 11 - 12
