@@ -70,11 +70,11 @@ class P3(Production):
         node_2 = node_map[left_side.nodes[4]]
         node_3 = graph.split_edge(node_map[left_side.nodes[2]],
                                   node_map[left_side.nodes[3]],
-                                  not graph.get_edge_between(node_map[left_side.nodes[2]],
+                                  graph.get_edge_between(node_map[left_side.nodes[2]],
                                                          node_map[left_side.nodes[3]]).is_border)
         node_4 = graph.split_edge(node_map[left_side.nodes[3]],
                                   node_map[left_side.nodes[0]],
-                                  not graph.get_edge_between(node_map[left_side.nodes[3]],
+                                  graph.get_edge_between(node_map[left_side.nodes[3]],
                                                          node_map[left_side.nodes[0]]).is_border)
 
         graph.remove_hyperedge(list(filter(lambda x: not x.is_hanging, list(node_map.values()))))

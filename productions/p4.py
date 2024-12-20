@@ -68,12 +68,12 @@ class P4(Production):
     def transform(self, graph: HyperGraph, node_map: dict[Node, Node], left_side: HyperGraph) -> (bool, HyperGraph):
         node_1 = graph.split_edge(node_map[left_side.nodes[0]],
                                   node_map[left_side.nodes[1]],
-                                  not graph.get_edge_between(node_map[left_side.nodes[0]],
+                                  graph.get_edge_between(node_map[left_side.nodes[0]],
                                                          node_map[left_side.nodes[1]]).is_border)
         node_2 = node_map[left_side.nodes[4]]
         node_3 = graph.split_edge(node_map[left_side.nodes[2]],
                                   node_map[left_side.nodes[3]],
-                                  not graph.get_edge_between(node_map[left_side.nodes[2]],
+                                  graph.get_edge_between(node_map[left_side.nodes[2]],
                                                          node_map[left_side.nodes[3]]).is_border)
         node_4 = node_map[left_side.nodes[5]]
 
