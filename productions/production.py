@@ -25,7 +25,9 @@ class Production(ABC):
         pass
 
     @abstractmethod
-    def transform(self, graph: HyperGraph, node_map: dict[Node, Node], left_side: HyperGraph) -> (bool, HyperGraph):
+    def transform(
+        self, graph: HyperGraph, node_map: dict[Node, Node], left_side: HyperGraph
+    ) -> (bool, HyperGraph):
         """Abstract method to transform the main graph."""
         pass
 
@@ -34,17 +36,25 @@ class Production(ABC):
         node_map = check(graph, left_side)
 
         if node_map:
-            reversed_node_map = {v: k for k, v in node_map.items() if isinstance(v, Node) and isinstance(k, Node)}
+            reversed_node_map = {
+                v: k
+                for k, v in node_map.items()
+                if isinstance(v, Node) and isinstance(k, Node)
+            }
 
             return self.transform(graph, reversed_node_map, left_side)
 
         return False, graph
 
     def visualize(self) -> None:
-        visualize_hypergraph(self.get_left_side().parse_hypergraph_to_networkx(),
-                             f"Left side of production {self._name}")
-        visualize_hypergraph(self.get_right_side().parse_hypergraph_to_networkx(),
-                             f"Right side of production {self._name}")
+        visualize_hypergraph(
+            self.get_left_side().parse_hypergraph_to_networkx(),
+            f"Left side of production {self._name}",
+        )
+        visualize_hypergraph(
+            self.get_right_side().parse_hypergraph_to_networkx(),
+            f"Right side of production {self._name}",
+        )
 
     def get_left_side(self) -> HyperGraph:
         return self._left_side
