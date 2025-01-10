@@ -8,7 +8,9 @@ from graph.elements.node import Node
 
 
 class HyperGraph:
-    def __init__(self, nodes: list[Node], edges: list[Edge], hyperedges: list[HyperEdge]):
+    def __init__(
+        self, nodes: list[Node], edges: list[Edge], hyperedges: list[HyperEdge]
+    ):
         self.nodes = nodes
         self.edges = edges
         self.hyperedges = hyperedges
@@ -29,7 +31,9 @@ class HyperGraph:
 
     def get_edge_between(self, node_1: Node, node_2: Node):
         for edge in self.edges:
-            if (edge.node_1 == node_1 and edge.node_2 == node_2) or (edge.node_1 == node_2 and edge.node_2 == node_1):
+            if (edge.node_1 == node_1 and edge.node_2 == node_2) or (
+                edge.node_1 == node_2 and edge.node_2 == node_1
+            ):
                 return edge
         raise Exception(f"There is no edge between [{node_1}] and [{node_2}]")
 
@@ -41,8 +45,12 @@ class HyperGraph:
         new_node = Node(x=new_x, y=new_y, is_hanging=is_hanging)
         self.nodes.append(new_node)
 
-        new_edge_1 = Edge(node_1=node_1, node_2=new_node, is_border=edge_to_split.is_border)
-        new_edge_2 = Edge(node_1=new_node, node_2=node_2, is_border=edge_to_split.is_border)
+        new_edge_1 = Edge(
+            node_1=node_1, node_2=new_node, is_border=edge_to_split.is_border
+        )
+        new_edge_2 = Edge(
+            node_1=new_node, node_2=node_2, is_border=edge_to_split.is_border
+        )
         self.edges.remove(edge_to_split)
         self.edges.append(new_edge_1)
         self.edges.append(new_edge_2)
@@ -57,7 +65,9 @@ class HyperGraph:
 
         return new_node
 
-    def add_edges(self, central_node: Node, nodes: list[Node], is_border: bool = False) -> None:
+    def add_edges(
+        self, central_node: Node, nodes: list[Node], is_border: bool = False
+    ) -> None:
         for node in nodes:
             self.add_edge(central_node, node, is_border=is_border)
 
@@ -69,8 +79,10 @@ class HyperGraph:
 
         return
 
-    def add_hyperedge(self, nodes: list[Node], is_removable: bool = False) -> None:
-        hyperedge = HyperEdge(nodes=nodes, is_removable=is_removable)
+    def add_hyperedge(
+        self, nodes: list[Node], is_removable: bool = False, label: str = "Q"
+    ) -> None:
+        hyperedge = HyperEdge(nodes=nodes, is_removable=is_removable, label=label)
         self.hyperedges.append(hyperedge)
 
         return
@@ -100,16 +112,13 @@ class HyperGraph:
                 y=node.y,
                 is_hanging=node.is_hanging,
                 is_production_relevant=node.is_production_relevant,
-                label=node.label
+                label=node.label,
             )
 
         # Add all edges to the graph
         for edge in self.edges:
             G.add_edge(
-                edge.node_1,
-                edge.node_2,
-                is_border=edge.is_border,
-                label=edge.label
+                edge.node_1, edge.node_2, is_border=edge.is_border, label=edge.label
             )
 
         # Add hyperedges to the graph
@@ -121,14 +130,11 @@ class HyperGraph:
                 label=hyperedge.label,
                 is_removable=hyperedge.is_removable,
                 x=hyperedge.x,
-                y=hyperedge.y
+                y=hyperedge.y,
             )
 
             # Connect the hyperedge node to all its associated nodes
             for node in hyperedge.nodes:
-                G.add_edge(
-                    hyperedge_node,
-                    node
-                )
+                G.add_edge(hyperedge_node, node)
 
         return G
