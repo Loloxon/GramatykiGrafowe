@@ -26,13 +26,13 @@ class TestP1(TestProduction, TestCase):
         tested_hypergraph = HyperGraph(nodes, edges, hyperedges)
 
         nodes = [Node(0, 0, False),
-                 Node(0.5, 0, True),
+                 Node(0.5, 0, False),
                  Node(1, 0, False),
-                 Node(0, 0.5, True),
+                 Node(0, 0.5, False),
                  Node(0.5, 0.5, False),
                  Node(1, 0.5, False),
                  Node(0, 1, False),
-                 Node(0.5, 1, True),
+                 Node(0.5, 1, False),
                  Node(1, 1, False)]
         edges = [Edge(nodes[0], nodes[1], True),
                  Edge(nodes[1], nodes[2], True),
@@ -78,13 +78,13 @@ class TestP1(TestProduction, TestCase):
         tested_hypergraph = HyperGraph(nodes, edges, hyperedges)
 
         nodes = [Node(0, 0, False),
-                 Node(0.5, 0, True),
+                 Node(0.5, 0, False),
                  Node(1, 0, False),
-                 Node(0, 0.5, True),
+                 Node(0, 0.5, False),
                  Node(0.5, 0.5, False),
                  Node(1, 0.5, False),
                  Node(0, 1, False),
-                 Node(0.5, 1, True),
+                 Node(0.5, 1, False),
                  Node(1, 1, False),
                  Node(1, 2, False),
                  Node(0, 2, False)]
