@@ -46,7 +46,8 @@ def node_match(v_self, v_left):
 def visualize_hypergraph(graph: nx.Graph, title: str,
                          display_properties: bool = True,
                          display_nodes: bool = True,
-                         display_labels: bool = True):
+                         display_labels: bool = True,
+                         pretty_hyperedges: bool = False):
     """
     Visualizes a hypergraph based on their attributes.
 
@@ -114,17 +115,18 @@ def visualize_hypergraph(graph: nx.Graph, title: str,
                 node_size=400
             )
 
-            # Draw non-removable hyperedges with borders
-            nx.draw_networkx_nodes(
-                graph,
-                pos,
-                nodelist=hyperedge_nodes_not_removable,
-                node_color='pink',
-                edgecolors='black',
-                linewidths=2,
-                node_shape='s',
-                node_size=400
-            )
+            if not pretty_hyperedges:
+                # Draw non-removable hyperedges with borders
+                nx.draw_networkx_nodes(
+                    graph,
+                    pos,
+                    nodelist=hyperedge_nodes_not_removable,
+                    node_color='pink',
+                    edgecolors='black',
+                    linewidths=2,
+                    node_shape='s',
+                    node_size=400
+                )
         else:
             nx.draw_networkx_nodes(
                 graph,
@@ -169,6 +171,16 @@ def visualize_hypergraph(graph: nx.Graph, title: str,
                 node_size=400,
                 label="Hyperedges"
             )
+    elif pretty_hyperedges:
+        # Draw removable hyperedges without borders
+        nx.draw_networkx_nodes(
+            graph,
+            pos,
+            nodelist=hyperedge_nodes_removable,
+            node_color='pink',
+            node_shape='s',
+            node_size=400
+        )
 
     # Draw edges
     border_edges = [(u, v) for u, v in graph.edges if
@@ -215,16 +227,17 @@ def visualize_hypergraph(graph: nx.Graph, title: str,
             edge_color="black"
         )
 
-    if display_nodes:
-        # Draw edges to hyperedge node (solid, grey)
-        nx.draw_networkx_edges(
-            graph,
-            pos,
-            edgelist=inside_edges,
-            style="solid",
-            width=1,
-            edge_color="grey"
-        )
+    if not pretty_hyperedges:
+        if display_nodes:
+            # Draw edges to hyperedge node (solid, grey)
+            nx.draw_networkx_edges(
+                graph,
+                pos,
+                edgelist=inside_edges,
+                style="solid",
+                width=1,
+                edge_color="grey"
+            )
 
     # Add labels for nodes and edges
     if display_labels:

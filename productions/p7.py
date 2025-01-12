@@ -64,13 +64,12 @@ class P7(Production):
 
 def predicate(node_map):
     has_node_1_1 = False
-    has_node_0_1 = False
 
     for node in node_map.keys():
         if isinstance(node, Node):
             if node.x == 1 and node.y == 1:
                 has_node_1_1 = True
-            elif node.x == 0 and node.y == 1:
-                has_node_0_1 = True
+            elif node.y == 1 and node.x != 1:
+                return False
 
-    return has_node_1_1 and not has_node_0_1
+    return has_node_1_1
