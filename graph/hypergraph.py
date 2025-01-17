@@ -29,6 +29,13 @@ class HyperGraph:
             print(str(n))
         print()
 
+    def copy(self):
+        return HyperGraph(
+            self.nodes.copy(),
+            self.edges.copy(),
+            self.hyperedges.copy()
+        )
+
     def get_edge_between(self, node_1: Node, node_2: Node):
         for edge in self.edges:
             if (edge.node_1 == node_1 and edge.node_2 == node_2) or (
