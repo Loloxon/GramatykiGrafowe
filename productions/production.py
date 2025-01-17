@@ -43,9 +43,9 @@ class Production(ABC):
                 if isinstance(v, Node) and isinstance(k, Node)
             }
 
-            return self.transform(graph, reversed_node_map, left_side)
+            return self.transform(graph.copy(), reversed_node_map, left_side)
 
-        return False, graph
+        return False, graph.copy()
 
     def visualize(self) -> None:
         visualize_hypergraph(
