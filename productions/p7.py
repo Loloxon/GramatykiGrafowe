@@ -17,7 +17,7 @@ class P7(Production):
                  Node(1, 1, False, False),
                  Node(0, 1, False, False)]
         edges = []
-        hyperedges = [HyperEdge([nodes[0], nodes[1], nodes[2], nodes[3]], False)]
+        hyperedges = [HyperEdge([nodes[0], nodes[1], nodes[2], nodes[3]], False, label="7")]
         return HyperGraph(
             nodes=nodes,
             edges=edges,
@@ -46,6 +46,6 @@ class P7(Production):
 
         graph.remove_hyperedge(list(filter(lambda x: not x.is_hanging, list(node_map.values()))))
 
-        graph.add_hyperedge([node_1, node_2, node_3, node_4], True)
+        graph.add_hyperedge([node_1, node_2, node_3, node_4], True, label="8")
 
         return True, graph

@@ -19,6 +19,7 @@ def check(graph: HyperGraph, subgraph: HyperGraph) -> bool | dict:
 
 def find_subgraph(graph: HyperGraph, subgraph: HyperGraph) -> bool | dict:
     found_subgraphs = find_subgraphs(graph, subgraph)
+    print(len(found_subgraphs))
     return choice(found_subgraphs) if len(found_subgraphs) > 0 else False
 
 
@@ -33,15 +34,16 @@ def find_subgraphs(graph: HyperGraph, subgraph: HyperGraph) -> list[dict]:
 
 
 def node_match(v_self, v_left):
-    return ("label" in v_self.keys() and "label" in v_left.keys() and v_self["label"] == v_left["label"]) and \
+    result = ("label" in v_self.keys() and "label" in v_left.keys() and v_self["label"] == v_left["label"]) and \
         (("is_hanging" in v_self.keys() and "is_hanging" in v_left.keys() and v_self["is_hanging"] == v_left[
             "is_hanging"]
           ) or (
                  "is_production_relevant" in v_left.keys() and not v_left["is_production_relevant"]
          )) or \
         ("is_removable" in v_self.keys() and "is_removable" in v_left.keys() and v_self["is_removable"] ==
-         v_left["is_removable"])
-
+         v_left["is_removable"] and v_self["label"] == v_left["label"])
+    # print(v_self["label"], v_left["label"], result)
+    return result
 
 def visualize_hypergraph(graph: nx.Graph, title: str,
                          display_properties: bool = True,

@@ -85,33 +85,33 @@ def sample_visualization():
         # p6.visualize()
 
         hypergraph_example = HyperGraph(nodes, edges, hyperedges)
-        nx_graph_example = hypergraph_example.parse_hypergraph_to_networkx()
-        visualize_hypergraph(nx_graph_example, "Graph example",
-                                        True, True, True)
+        # nx_graph_example = hypergraph_example.parse_hypergraph_to_networkx()
+        # visualize_hypergraph(nx_graph_example, "Graph example",
+        #                                 True, True, True)
 
         _, hypergraph_example = p16.apply(hypergraph_example)
-        nx_graph_example = hypergraph_example.parse_hypergraph_to_networkx()
-        visualize_hypergraph(nx_graph_example, "Graph example after P16",
-                                        True, True, True)
+        # nx_graph_example = hypergraph_example.parse_hypergraph_to_networkx()
+        # visualize_hypergraph(nx_graph_example, "Graph example after P16",
+        #                                 True, True, True)
         
         _, hypergraph_example = p9.apply(hypergraph_example)
-        nx_graph_example = hypergraph_example.parse_hypergraph_to_networkx()
-        visualize_hypergraph(nx_graph_example, "Graph example after P9",
-                                        True, True, True)
+        # nx_graph_example = hypergraph_example.parse_hypergraph_to_networkx()
+        # visualize_hypergraph(nx_graph_example, "Graph example after P9",
+        #                                 True, True, True)
         
         _, hypergraph_example = p7.apply(hypergraph_example)
         nx_graph_example = hypergraph_example.parse_hypergraph_to_networkx()
         visualize_hypergraph(nx_graph_example, "Graph example after P7",
                                         True, True, True)
-        
+        #
         _, hypergraph_example = p8.apply(hypergraph_example)
         nx_graph_example = hypergraph_example.parse_hypergraph_to_networkx()
         visualize_hypergraph(nx_graph_example, "Graph example after P8",
                                         True, True, True)
-        _, hypergraph_example = p8.apply(hypergraph_example)
-        nx_graph_example = hypergraph_example.parse_hypergraph_to_networkx()
-        visualize_hypergraph(nx_graph_example, "Graph example after P8",
-                                        True, True, True)
+        # _, hypergraph_example = p8.apply(hypergraph_example)
+        # nx_graph_example = hypergraph_example.parse_hypergraph_to_networkx()
+        # visualize_hypergraph(nx_graph_example, "Graph example after P8",
+        #                                 True, True, True)
 
         # _, hypergraph_example = p2.apply(hypergraph_example)
         # nx_graph_example = hypergraph_example.parse_hypergraph_to_networkx()

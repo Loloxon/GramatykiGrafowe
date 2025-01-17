@@ -22,7 +22,7 @@ class P8(Production):
         edges = [Edge(nodes[1], nodes[4], False),
                  Edge(nodes[2], nodes[4], False)]
         hyperedges = [HyperEdge([nodes[0], nodes[1], nodes[2], nodes[3]], False),
-                      HyperEdge([nodes[2], nodes[4], nodes[5], nodes[6]], True)]
+                      HyperEdge([nodes[2], nodes[4], nodes[5], nodes[6]], True, label="8")]
         return HyperGraph(
             nodes=nodes,
             edges=edges,

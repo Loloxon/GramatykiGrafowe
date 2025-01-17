@@ -134,10 +134,18 @@ class P9(Production):
         graph.add_edge(node_4, node_center)
         graph.add_edge(node_5, node_center)
 
-        graph.add_hyperedge([node_1, node_5, node_map[left_side.nodes[0]], node_center], False)
-        graph.add_hyperedge([node_1, node_2, node_map[left_side.nodes[1]], node_center], False)
-        graph.add_hyperedge([node_2, node_3, node_map[left_side.nodes[2]], node_center], False)
-        graph.add_hyperedge([node_3, node_4, node_map[left_side.nodes[3]], node_center], False)
-        graph.add_hyperedge([node_4, node_5, node_map[left_side.nodes[4]], node_center], False)
+        i_max = 0
+        for i in range(1, 5):
+            if node_map[left_side.nodes[i]].x > node_map[left_side.nodes[i_max]].x:
+                i_max = i
+
+        def get_label(i):
+            return "7" if i == i_max else "V"
+
+        graph.add_hyperedge([node_1, node_5, node_map[left_side.nodes[0]], node_center], False, label=get_label(0))
+        graph.add_hyperedge([node_1, node_2, node_map[left_side.nodes[1]], node_center], False, label=get_label(1))
+        graph.add_hyperedge([node_2, node_3, node_map[left_side.nodes[2]], node_center], False, label=get_label(2))
+        graph.add_hyperedge([node_3, node_4, node_map[left_side.nodes[3]], node_center], False, label=get_label(3))
+        graph.add_hyperedge([node_4, node_5, node_map[left_side.nodes[4]], node_center], False, label=get_label(4))
 
         return True, graph
