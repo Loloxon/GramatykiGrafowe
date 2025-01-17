@@ -29,6 +29,7 @@ def find_subgraphs(graph: HyperGraph, subgraph: HyperGraph) -> list[dict]:
         node_match=node_match
     )
 
+    #return list(matcher.subgraph_isomorphisms_iter())
     return list(matcher.subgraph_monomorphisms_iter())
 
 
