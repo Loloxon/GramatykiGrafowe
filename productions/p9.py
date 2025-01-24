@@ -98,31 +98,36 @@ class P9(Production):
         node_1 = graph.split_edge(
             node_map[left_side.nodes[0]],
             node_map[left_side.nodes[1]],
-            not graph.get_edge_between(node_map[left_side.nodes[0]], node_map[left_side.nodes[1]]).is_border
+            True
+            # not graph.get_edge_between(node_map[left_side.nodes[0]], node_map[left_side.nodes[1]]).is_border
         )
 
         node_2 = graph.split_edge(
             node_map[left_side.nodes[1]],
             node_map[left_side.nodes[2]],
-            not graph.get_edge_between(node_map[left_side.nodes[1]], node_map[left_side.nodes[2]]).is_border
+            True
+            # not graph.get_edge_between(node_map[left_side.nodes[1]], node_map[left_side.nodes[2]]).is_border
         )
 
         node_3 = graph.split_edge(
             node_map[left_side.nodes[2]],
             node_map[left_side.nodes[3]],
-            not graph.get_edge_between(node_map[left_side.nodes[2]], node_map[left_side.nodes[3]]).is_border
+            True
+            # not graph.get_edge_between(node_map[left_side.nodes[2]], node_map[left_side.nodes[3]]).is_border
         )
 
         node_4 = graph.split_edge(
             node_map[left_side.nodes[3]],
             node_map[left_side.nodes[4]],
-            not graph.get_edge_between(node_map[left_side.nodes[3]], node_map[left_side.nodes[4]]).is_border
+            True
+            # not graph.get_edge_between(node_map[left_side.nodes[3]], node_map[left_side.nodes[4]]).is_border
         )
 
         node_5 = graph.split_edge(
             node_map[left_side.nodes[4]],
             node_map[left_side.nodes[0]],
-            not graph.get_edge_between(node_map[left_side.nodes[4]], node_map[left_side.nodes[0]]).is_border
+            True
+            # not graph.get_edge_between(node_map[left_side.nodes[4]], node_map[left_side.nodes[0]]).is_border
         )
 
         graph.remove_hyperedge(list(node_map.values()))
@@ -140,7 +145,7 @@ class P9(Production):
                 i_max = i
 
         def get_label(i):
-            return "7" if i == i_max else "V"
+            return "7" if i == i_max else "Q"
 
         graph.add_hyperedge([node_1, node_5, node_map[left_side.nodes[0]], node_center], False, label=get_label(0))
         graph.add_hyperedge([node_1, node_2, node_map[left_side.nodes[1]], node_center], False, label=get_label(1))
