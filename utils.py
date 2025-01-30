@@ -13,16 +13,44 @@ def equals(graph1: HyperGraph, graph2: HyperGraph) -> bool:
     return check(graph1, graph2) and check(graph2, graph1)
 
 
-def check(graph: HyperGraph, subgraph: HyperGraph) -> bool | dict:
-    return find_subgraph(graph, subgraph)
+def check(graph: HyperGraph, subgraph: HyperGraph, vertex_inside=None) -> bool | dict:
+    return find_subgraph(graph, subgraph, vertex_inside)
 
 
-def find_subgraph(graph: HyperGraph, subgraph: HyperGraph) -> bool | dict:
-    found_subgraphs = find_subgraphs(graph, subgraph)
+def find_subgraph(graph: HyperGraph, subgraph: HyperGraph, vertex_inside=None) -> bool | dict:
+    found_subgraphs = find_subgraphs(graph, subgraph, vertex_inside)
     return choice(found_subgraphs) if len(found_subgraphs) > 0 else False
 
 
-def find_subgraphs(graph: HyperGraph, subgraph: HyperGraph) -> list[dict]:
+def point_in_triangle(a, b, c, p):
+    def sign(p1, p2, p3):
+        return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y)
+
+    d1 = sign(p, a, b)
+    d2 = sign(p, b, c)
+    d3 = sign(p, c, a)
+
+    has_neg = (d1 < 0) or (d2 < 0) or (d3 < 0)
+    has_pos = (d1 > 0) or (d2 > 0) or (d3 > 0)
+
+    return not (has_neg and has_pos)
+
+
+def find_subgraphs(graph: HyperGraph, subgraph: HyperGraph, vertex_inside=None) -> list[dict]:
+    if vertex_inside is not None:
+        graph = graph.copy()
+        for he in graph.hyperedges:
+            found = False
+            for i in range(1, len(he.nodes)):
+                for j in range(i+1, len(he.nodes)):
+                    if point_in_triangle(he.nodes[0], he.nodes[i], he.nodes[j], vertex_inside):
+                        found = True
+                        break
+                if found:
+                    break
+            if not found:
+                graph.remove_hyperedge(he.nodes)
+
     matcher = nx.algorithms.isomorphism.GraphMatcher(
         graph.parse_hypergraph_to_networkx(),
         subgraph.parse_hypergraph_to_networkx(),
@@ -47,7 +75,9 @@ def node_match(v_self, v_left):
 def visualize_hypergraph(graph: nx.Graph, title: str,
                          display_properties: bool = True,
                          display_nodes: bool = True,
-                         display_labels: bool = True):
+                         display_labels: bool = True,
+                         node_size: int = 75,
+                         plot_size: tuple = (12, 12)):
     """
     Visualizes a hypergraph based on their attributes.
 
@@ -82,6 +112,8 @@ def visualize_hypergraph(graph: nx.Graph, title: str,
     hyperedge_nodes_removable = [node for node in hyperedge_nodes if graph.nodes[node].get('is_removable')]
     hyperedge_nodes_not_removable = [node for node in hyperedge_nodes if not graph.nodes[node].get('is_removable')]
 
+    plt.figure(1, figsize=plot_size) 
+
     if display_nodes:
         if display_properties:
             # Draw hanging nodes without borders
@@ -91,7 +123,7 @@ def visualize_hypergraph(graph: nx.Graph, title: str,
                 nodelist=regular_nodes_hanging,
                 node_color='lightblue',
                 edgecolors='none',  # No border
-                node_size=400
+                node_size=node_size
             )
 
             # Draw non-hanging nodes with borders
@@ -101,8 +133,8 @@ def visualize_hypergraph(graph: nx.Graph, title: str,
                 nodelist=regular_nodes_not_hanging,
                 node_color='lightblue',
                 edgecolors='black',
-                linewidths=2,
-                node_size=400
+                linewidths=1,
+                node_size=node_size
             )
 
             # Draw removable hyperedges without borders
@@ -112,7 +144,7 @@ def visualize_hypergraph(graph: nx.Graph, title: str,
                 nodelist=hyperedge_nodes_removable,
                 node_color='pink',
                 node_shape='s',
-                node_size=400
+                node_size=node_size
             )
 
             # Draw non-removable hyperedges with borders
@@ -122,9 +154,9 @@ def visualize_hypergraph(graph: nx.Graph, title: str,
                 nodelist=hyperedge_nodes_not_removable,
                 node_color='pink',
                 edgecolors='black',
-                linewidths=2,
+                linewidths=1,
                 node_shape='s',
-                node_size=400
+                node_size=node_size
             )
         else:
             nx.draw_networkx_nodes(
@@ -134,7 +166,7 @@ def visualize_hypergraph(graph: nx.Graph, title: str,
                 node_color='lightblue',
                 edgecolors='black',
                 linewidths=2,
-                node_size=400,
+                node_size=node_size,
                 label="Non-Hanging Nodes"
             )
             nx.draw_networkx_nodes(
@@ -144,7 +176,7 @@ def visualize_hypergraph(graph: nx.Graph, title: str,
                 node_color='lightblue',
                 edgecolors='black',
                 linewidths=2,
-                node_size=400,
+                node_size=node_size,
                 label="Non-Hanging Nodes"
             )
 
@@ -156,7 +188,7 @@ def visualize_hypergraph(graph: nx.Graph, title: str,
                 edgecolors='black',
                 linewidths=2,
                 node_shape='s',
-                node_size=400,
+                node_size=node_size,
                 label="Hyperedges"
             )
             nx.draw_networkx_nodes(
@@ -167,7 +199,7 @@ def visualize_hypergraph(graph: nx.Graph, title: str,
                 edgecolors='black',
                 linewidths=2,
                 node_shape='s',
-                node_size=400,
+                node_size=node_size,
                 label="Hyperedges"
             )
 

@@ -32,9 +32,9 @@ class Production(ABC):
         """Abstract method to transform the main graph."""
         pass
 
-    def apply(self, graph: HyperGraph) -> (bool, HyperGraph):
+    def apply(self, graph: HyperGraph, vertex_inside=None) -> (bool, HyperGraph):
         left_side = self.get_left_side()
-        node_map = check(graph, left_side)
+        node_map = check(graph, left_side, vertex_inside)
 
         if node_map:
             reversed_node_map = {
@@ -47,14 +47,16 @@ class Production(ABC):
 
         return False, graph.copy()
 
-    def visualize(self) -> None:
+    def visualize(self, node_size=400, plot_size=(6, 6)) -> None:
         visualize_hypergraph(
             self.get_left_side().parse_hypergraph_to_networkx(),
             f"Left side of production {self._name}",
+            node_size=node_size, plot_size=plot_size
         )
         visualize_hypergraph(
             self.get_right_side().parse_hypergraph_to_networkx(),
             f"Right side of production {self._name}",
+            node_size=node_size, plot_size=plot_size
         )
 
     def get_left_side(self) -> HyperGraph:

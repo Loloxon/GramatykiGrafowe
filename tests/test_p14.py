@@ -9,7 +9,7 @@ from utils import equals
 from tests.test import TestProduction
 
 
-class TestP13(TestProduction, TestCase):
+class TestP14(TestProduction, TestCase):
     def test_apply_exact_graph(self):
         p14 = P14()
         tested_hypergraph = p14._left_side
